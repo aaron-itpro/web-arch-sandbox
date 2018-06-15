@@ -1,12 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Web Architecture Example (ITProFound Standard)</title>
 </head>
 <body>
 
-<h1>Hello World!</h1>
+<h1>Web Architecture Example (ITProFound Standard)</h1>
+<form>
+    <div>
+        <span>Add a word:</span>
+        <input type="text" title="Word to add">
+        <button type="submit">Add</button>
+    </div>
+</form>
+<h3>Current Words:</h3>
+<ul>
+    <li th:each="word : ${words}" th:text="${word}"></li>
+</ul>
 
 </body>
 </html>

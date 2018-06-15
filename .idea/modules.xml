@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/WebArchSandbox.iml" filepath="$PROJECT_DIR$/WebArchSandbox.iml" />
+      <module fileurl="file://$PROJECT_DIR$/itpro-standard/itpro-standard.iml" filepath="$PROJECT_DIR$/itpro-standard/itpro-standard.iml" />
     </modules>
   </component>
 </project>

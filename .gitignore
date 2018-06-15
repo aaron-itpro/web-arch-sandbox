@@ -19,6 +19,7 @@
 .idea/**/dynamic.xml
 .idea/**/uiDesigner.xml
 .idea/**/dbnavigator.xml
+.idea/checkstyleidea-libs/**
 
 # Gradle
 .idea/**/gradle.xml
@@ -79,6 +80,21 @@ hs_err_pid*
 
 # Editor-based Rest Client
 .idea/httpRequests
+
+### Maven template
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+
+# Avoid ignoring Maven wrapper jar file (.jar files are usually ignored)
+!/.mvn/wrapper/maven-wrapper.jar
+
 
 ### Windows template
 # Windows thumbnail cache files

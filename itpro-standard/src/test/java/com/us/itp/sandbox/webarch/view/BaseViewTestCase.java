@@ -5,6 +5,8 @@ import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import lombok.AccessLevel;
+import lombok.Setter;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,21 +51,15 @@ abstract class BaseViewTestCase {
         @Controller
         static class MockController {
 
+            @NonNull @Setter(AccessLevel.PACKAGE)
             private String template;
 
-            void setTemplate(@NonNull String template) {
-                this.template = template;
-            }
-
-            private Map<String, Object> testModel;
-
-            void setModel(@NonNull final Map<String, Object> model) {
-                testModel = model;
-            }
+            @NonNull @Setter(AccessLevel.PACKAGE)
+            private Map<String, Object> model;
 
             @GetMapping("/")
             @NonNull public String mainPage(@NonNull final Model model) {
-                model.addAllAttributes(testModel);
+                model.addAllAttributes(this.model);
                 assert (template != null);
                 return template;
             }

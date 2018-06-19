@@ -47,6 +47,6 @@ public final class MainControllerTests {
     @Test
     public void wordListIsFromService() throws Exception {
         mvc.perform(MockMvcRequestBuilders.get("/").accept(MediaType.TEXT_HTML))
-            .andExpect(model().attribute("words", service.listAllWords()));
+            .andExpect(model().attribute(MainController.MODEL_ATTR_WORDS, service.listAllWords()));
     }
 }

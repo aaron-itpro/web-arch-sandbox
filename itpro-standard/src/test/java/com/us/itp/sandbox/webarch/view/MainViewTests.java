@@ -4,6 +4,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 import com.gargoylesoftware.htmlunit.html.HtmlElement;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import com.us.itp.sandbox.webarch.controller.MainController;
 import com.us.itp.sandbox.webarch.util.HtmlMatchers;
 import java.io.IOException;
 import java.util.Arrays;
@@ -32,6 +33,6 @@ public final class MainViewTests extends BaseViewTestCase {
     }
 
     @NonNull private HtmlPage getPageFor(@NonNull List<String> words) throws IOException {
-        return getPageFor("words", words);
+        return getPageFor(MainController.MODEL_ATTR_WORDS, words);
     }
 }

@@ -1,5 +1,7 @@
 package com.us.itp.sandbox.webarch.controller;
 
+import static org.hamcrest.core.IsCollectionContaining.hasItem;
+import static org.junit.Assert.assertThat;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.lang.NonNull;
 import org.springframework.test.context.ContextConfiguration;
@@ -24,7 +27,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 @ContextConfiguration(classes = { MainControllerTests.Config.class })
 public final class MainControllerTests {
 
-    static final class Config {
+    @Configuration
+    static class Config {
 
         @Bean WordService wordService() {
             return new WordServiceImpl("Alpha", "Bravo");
@@ -48,5 +52,13 @@ public final class MainControllerTests {
     public void wordListIsFromService() throws Exception {
         mvc.perform(MockMvcRequestBuilders.get("/").accept(MediaType.TEXT_HTML))
             .andExpect(model().attribute(MainController.MODEL_ATTR_WORDS, service.listAllWords()));
+    }
+
+    @Test
+    public void wordsAreAddedToService() throws Exception {
+        final String word = "Foo";
+        mvc.perform(MockMvcRequestBuilders.post("/word/{word}", word))
+            .andExpect(status().isOk());
+        assertThat(service.listAllWords(), hasItem(word));
     }
 }

@@ -6,6 +6,8 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public final class MainController {
@@ -24,6 +26,11 @@ public final class MainController {
     @GetMapping("/")
     @NonNull public String mainPage() {
         return "main";
+    }
+
+    @PostMapping("/word/{word}")
+    public void addWord(@NonNull @PathVariable("word") String word) {
+        wordService.addWord(word);
     }
 
     public static final String MODEL_ATTR_WORDS = "words";

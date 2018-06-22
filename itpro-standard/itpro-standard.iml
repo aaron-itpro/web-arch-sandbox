@@ -123,5 +123,6 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty:jetty-io:9.4.10.v20180503" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty.websocket:websocket-common:9.4.10.v20180503" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty.websocket:websocket-api:9.4.10.v20180503" level="project" />
+    <orderEntry type="library" name="jquery" level="application" />
   </component>
 </module>

@@ -7,10 +7,10 @@
 <body>
 
 <h1>Web Architecture Example (ITProFound Standard)</h1>
-<form>
+<form name="add-word">
     <div>
         <span>Add a word:</span>
-        <input type="text" title="Word to add">
+        <input type="text" title="Word to add" name="word">
         <button type="submit">Add</button>
     </div>
 </form>
@@ -23,7 +23,8 @@
 
 <script>
     $("form").on("submit", function(event) {
-        alert("Hello!");
+        var word = $(this).find("input[name='word']").val();
+        $.post("word/" + encodeURIComponent(word));
         event.preventDefault();
     });
 </script>

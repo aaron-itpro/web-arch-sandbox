@@ -1,5 +1,6 @@
 package com.us.itp.sandbox.webarch.view;
 
+import com.gargoylesoftware.htmlunit.NicelyResynchronizingAjaxController;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import java.io.IOException;
@@ -66,7 +67,7 @@ abstract class BaseViewTestCase {
         }
     }
 
-    @Autowired private WebApplicationContext context;
+    @Autowired WebApplicationContext context;
     private WebClient webClient;
     private Config.MockController controller;
 
@@ -76,6 +77,7 @@ abstract class BaseViewTestCase {
         controller.setTemplate(this.template);
 
         webClient = MockMvcWebClientBuilder.webAppContextSetup(context).build();
+        webClient.setAjaxController(new NicelyResynchronizingAjaxController());
     }
 
     @NonNull final HtmlPage getPageFor(

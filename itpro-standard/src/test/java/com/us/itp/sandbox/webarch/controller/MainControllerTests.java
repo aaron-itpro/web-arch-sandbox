@@ -19,6 +19,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 @RunWith(SpringRunner.class)
@@ -44,20 +45,23 @@ public final class MainControllerTests {
 
     @Test
     public void mainPageLoads() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.get("/").accept(MediaType.TEXT_HTML))
-            .andExpect(status().isOk());
+        mvc.perform(requestMainPage()).andExpect(status().isOk());
     }
 
     @Test
     public void wordListIsFromService() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.get("/").accept(MediaType.TEXT_HTML))
+        mvc.perform(requestMainPage())
             .andExpect(model().attribute(MainController.MODEL_ATTR_WORDS, service.listAllWords()));
+    }
+
+    private RequestBuilder requestMainPage() {
+        return MockMvcRequestBuilders.get(MainController.URL_MAIN).accept(MediaType.TEXT_HTML);
     }
 
     @Test
     public void wordsAreAddedToService() throws Exception {
         final String word = "Foo";
-        mvc.perform(MockMvcRequestBuilders.post("/word/{word}", word))
+        mvc.perform(MockMvcRequestBuilders.post(MainController.URL_ADD_WORD, word))
             .andExpect(status().isOk());
         assertThat(service.listAllWords(), hasItem(word));
     }

@@ -23,15 +23,19 @@ public final class MainController {
         return wordService.listAllWords();
     }
 
-    @GetMapping("/")
+    @GetMapping(URL_MAIN)
     @NonNull public String mainPage() {
         return "main";
     }
 
-    @PostMapping("/word/{word}")
-    public void addWord(@NonNull @PathVariable("word") String word) {
+    @PostMapping(URL_ADD_WORD)
+    public void addWord(@NonNull @PathVariable(URL_PARAM_WORD) String word) {
         wordService.addWord(word);
     }
 
     public static final String MODEL_ATTR_WORDS = "words";
+    public static final String URL_PARAM_WORD = "word";
+
+    static final String URL_MAIN = "/";
+    public static final String URL_ADD_WORD = URL_MAIN + "word/{" + URL_PARAM_WORD + "}";
 }

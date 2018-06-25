@@ -10,8 +10,6 @@ import com.us.itp.sandbox.webarch.controller.MainController;
 import com.us.itp.sandbox.webarch.util.HtmlMatchers;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.annotation.Configuration;
@@ -37,8 +35,8 @@ public final class MainViewTests extends BaseViewTestCase {
 
             @Nullable private String word = null;
 
-            @PostMapping("/word/{word}")
-            public void setWord(@NonNull @PathVariable("word") String word) {
+            @PostMapping(MainController.URL_ADD_WORD)
+            public void setWord(@NonNull @PathVariable(MainController.URL_PARAM_WORD) String word) {
                 this.word = word;
             }
         }
@@ -54,16 +52,22 @@ public final class MainViewTests extends BaseViewTestCase {
 
     @Test
     public void wordListIsPopulatedCorrectly() throws Exception {
-        final List<String> words = Arrays.asList("alpha", "bravo");
-        final HtmlElement wordList = getWordListOnPageFor(words);
-        for (String word : words) {
+        final String[] words = {"alpha", "bravo"};
+        assertWordsInWordList(getPageFor(words), words);
+    }
+
+    private void assertWordsInWordList(HtmlPage page, String... expectedWords) {
+        assertWordsInWordList(getWordListOnPage(page), expectedWords);
+    }
+
+    private void assertWordsInWordList(HtmlElement wordList, String... expectedWords) {
+        for (String word : expectedWords) {
             assertThat(wordList, HtmlMatchers.containsText(word));
         }
     }
 
-    @NonNull private HtmlElement getWordListOnPageFor(@NonNull final List<String> words) throws
-        IOException {
-        return getPageFor(words).getHtmlElementById("word-list");
+    @NonNull private HtmlElement getWordListOnPage(@NonNull final HtmlPage page) {
+        return page.getHtmlElementById(ID_WORD_LIST);
     }
 
     @Test
@@ -85,14 +89,14 @@ public final class MainViewTests extends BaseViewTestCase {
         @NonNull final String expectedWord,
         @NonNull final String inputWord
     ) throws Exception {
-        addWordOnPage(getPageFor(Collections.emptyList()), inputWord);
+        addWordOnPage(getPageFor(), inputWord);
         assertEquals(expectedWord, ajax.word);
     }
 
     private void addWordOnPage(@NonNull final HtmlPage page, @NonNull final String word)
     throws IOException {
-        final HtmlForm form = page.getFormByName("add-word");
-        form.getInputByName("word").type(word);
+        final HtmlForm form = page.getFormByName(FORM_ADD_WORD);
+        form.getInputByName(FIELD_WORD).type(word);
         submitForm(form);
     }
 
@@ -100,7 +104,11 @@ public final class MainViewTests extends BaseViewTestCase {
         form.getOneHtmlElementByAttribute("button", "type", "submit").click();
     }
 
-    @NonNull private HtmlPage getPageFor(@NonNull final List<String> words) throws IOException {
-        return getPageFor(MainController.MODEL_ATTR_WORDS, words);
+    @NonNull private HtmlPage getPageFor(@NonNull final String... words) throws IOException {
+        return getPageFor(MainController.MODEL_ATTR_WORDS, Arrays.asList(words));
     }
+
+    private static final String ID_WORD_LIST = "word-list";
+    private static final String FORM_ADD_WORD = "add-word";
+    private static final String FIELD_WORD = "word";
 }

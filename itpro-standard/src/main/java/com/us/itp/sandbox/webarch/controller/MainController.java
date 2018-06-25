@@ -28,6 +28,11 @@ public final class MainController {
         return "main";
     }
 
+    @GetMapping(URL_WORD_LIST)
+    @NonNull public String wordList() {
+        return "main :: wordList";
+    }
+
     @PostMapping(URL_ADD_WORD)
     public void addWord(@NonNull @PathVariable(URL_PARAM_WORD) String word) {
         wordService.addWord(word);
@@ -37,5 +42,6 @@ public final class MainController {
     public static final String URL_PARAM_WORD = "word";
 
     static final String URL_MAIN = "/";
-    public static final String URL_ADD_WORD = URL_MAIN + "word/{" + URL_PARAM_WORD + "}";
+    static final String URL_WORD_LIST = URL_MAIN + "word";
+    public static final String URL_ADD_WORD = URL_WORD_LIST + "/{" + URL_PARAM_WORD + "}";
 }

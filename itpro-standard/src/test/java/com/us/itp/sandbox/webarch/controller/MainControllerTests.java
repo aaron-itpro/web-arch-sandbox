@@ -20,6 +20,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
+import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 @RunWith(SpringRunner.class)
@@ -45,17 +46,34 @@ public final class MainControllerTests {
 
     @Test
     public void mainPageLoads() throws Exception {
-        mvc.perform(requestMainPage()).andExpect(status().isOk());
+        assertPageLoads(MainController.URL_MAIN);
+    }
+
+    @Test
+    public void wordListLoads() throws Exception {
+        assertPageLoads(MainController.URL_WORD_LIST);
+    }
+
+    private void assertPageLoads(String url) throws Exception {
+        mvc.perform(requestPage(url)).andExpect(status().isOk());
     }
 
     @Test
     public void wordListIsFromService() throws Exception {
-        mvc.perform(requestMainPage())
-            .andExpect(model().attribute(MainController.MODEL_ATTR_WORDS, service.listAllWords()));
+        wordListIsFromService(MainController.URL_MAIN);
+        wordListIsFromService(MainController.URL_WORD_LIST);
     }
 
-    private RequestBuilder requestMainPage() {
-        return MockMvcRequestBuilders.get(MainController.URL_MAIN).accept(MediaType.TEXT_HTML);
+    private void wordListIsFromService(String url) throws Exception {
+        mvc.perform(requestPage(url)).andExpect(wordListMatchesService());
+    }
+
+    private ResultMatcher wordListMatchesService() {
+        return model().attribute(MainController.MODEL_ATTR_WORDS, service.listAllWords());
+    }
+
+    private RequestBuilder requestPage(String url) {
+        return MockMvcRequestBuilders.get(url).accept(MediaType.TEXT_HTML);
     }
 
     @Test

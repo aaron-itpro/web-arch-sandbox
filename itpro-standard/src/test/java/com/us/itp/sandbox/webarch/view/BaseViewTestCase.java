@@ -4,7 +4,7 @@ import com.gargoylesoftware.htmlunit.NicelyResynchronizingAjaxController;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.Map;
 import lombok.AccessLevel;
 import lombok.Setter;
@@ -22,6 +22,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.htmlunit.MockMvcWebClientBuilder;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.context.WebApplicationContext;
 
 /**
@@ -30,7 +31,8 @@ import org.springframework.web.context.WebApplicationContext;
  * <p>To use this class, subclasses just need to provide the name of the Thymeleaf template to test
  * against via the {@link #BaseViewTestCase(String)} constructor.  Once that's done, individual
  * tests can obtain a freshly rendered HTML page for a particular data model by using the
- * {@link #getPageFor} method.
+ * {@link #getPageFor} method.  Any fragments in the template under test can be retrieved using
+ * the {@link #getFragmentFor} method in a similar fashion.
  */
 @RunWith(SpringRunner.class)
 @WebAppConfiguration
@@ -64,6 +66,16 @@ abstract class BaseViewTestCase {
                 assert (template != null);
                 return template;
             }
+
+            @GetMapping("/fragment/{fragment}")
+            @NonNull public String fragment(
+                @PathVariable("fragment") final String fragment,
+                @NonNull final Model model
+            ) {
+                model.addAllAttributes(this.model);
+                assert (template != null);
+                return template + " :: " + fragment;
+            }
         }
     }
 
@@ -84,14 +96,31 @@ abstract class BaseViewTestCase {
         @NonNull final String key,
         @Nullable final Object value
     ) throws IOException {
-        final Map<String, Object> model = new HashMap<>();
-        model.put(key, value);
-        return getPageFor(model);
+        return getPageFor(Collections.singletonMap(key, value));
     }
 
-    @NonNull private HtmlPage getPageFor(@NonNull final Map<String, Object> model) throws
-        IOException {
+    @NonNull private HtmlPage getPageFor(
+        @NonNull final Map<String, Object> model
+    ) throws IOException {
         controller.setModel(model);
-        return webClient.getPage("http://localhost/");
+        return webClient.getPage(BASE_URL);
     }
+
+    @NonNull final HtmlPage getFragmentFor(
+        @NonNull final String fragmentName,
+        @NonNull final String key,
+        @Nullable final Object value
+    ) throws IOException {
+        return getFragmentFor(fragmentName, Collections.singletonMap(key, value));
+    }
+
+    @NonNull private HtmlPage getFragmentFor(
+        @NonNull final String fragmentName,
+        @NonNull final Map<String, Object> model
+    ) throws IOException {
+        controller.setModel(model);
+        return webClient.getPage(BASE_URL + "fragment/" + fragmentName);
+    }
+
+    private static final String BASE_URL = "http://localhost/";
 }

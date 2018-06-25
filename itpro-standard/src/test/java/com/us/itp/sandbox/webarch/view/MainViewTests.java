@@ -66,6 +66,16 @@ public final class MainViewTests extends BaseViewTestCase {
         }
     }
 
+    @Test
+    public void wordListFragmentMatchesMainPage() throws Exception {
+        final String[] words = {"alpha", "bravo", "charlie"};
+        assertWordListsMatchOn(getPageFor(words), getWordListFragmentFor(words));
+    }
+
+    private void assertWordListsMatchOn(HtmlPage page1, HtmlPage page2) {
+        assertEquals(getWordListOnPage(page1).asXml(), getWordListOnPage(page2).asXml());
+    }
+
     @NonNull private HtmlElement getWordListOnPage(@NonNull final HtmlPage page) {
         return page.getHtmlElementById(ID_WORD_LIST);
     }
@@ -108,7 +118,17 @@ public final class MainViewTests extends BaseViewTestCase {
         return getPageFor(MainController.MODEL_ATTR_WORDS, Arrays.asList(words));
     }
 
+    @NonNull private HtmlPage getWordListFragmentFor(@NonNull final String... words)
+    throws IOException {
+        return getFragmentFor(
+            FRAG_WORD_LIST,
+            MainController.MODEL_ATTR_WORDS,
+            Arrays.asList(words)
+        );
+    }
+
     private static final String ID_WORD_LIST = "word-list";
+    private static final String FRAG_WORD_LIST = "wordList";
     private static final String FORM_ADD_WORD = "add-word";
     private static final String FIELD_WORD = "word";
 }

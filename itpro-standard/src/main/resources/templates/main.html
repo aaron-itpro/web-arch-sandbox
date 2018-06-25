@@ -15,7 +15,7 @@
     </div>
 </form>
 <h3>Current Words:</h3>
-<ul id="word-list">
+<ul id="word-list" th:fragment="wordList">
     <li th:each="word : ${words}" th:text="${word}"></li>
 </ul>
 

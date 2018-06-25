@@ -42,6 +42,6 @@ public final class MainController {
     public static final String URL_PARAM_WORD = "word";
 
     static final String URL_MAIN = "/";
-    static final String URL_WORD_LIST = URL_MAIN + "word";
+    public static final String URL_WORD_LIST = URL_MAIN + "word";
     public static final String URL_ADD_WORD = URL_WORD_LIST + "/{" + URL_PARAM_WORD + "}";
 }

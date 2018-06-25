@@ -25,6 +25,7 @@
     $("form").on("submit", function(event) {
         var word = $(this).find("input[name='word']").val();
         $.post("word/" + encodeURIComponent(word));
+        $("#word-list").load("/word");
         event.preventDefault();
     });
 </script>

@@ -62,7 +62,7 @@ abstract class BaseViewTestCase {
 
             @GetMapping("/")
             @NonNull public String mainPage(@NonNull final Model model) {
-                model.addAllAttributes(this.model);
+                model.mergeAttributes(this.model);
                 assert (template != null);
                 return template;
             }
@@ -72,7 +72,7 @@ abstract class BaseViewTestCase {
                 @PathVariable("fragment") final String fragment,
                 @NonNull final Model model
             ) {
-                model.addAllAttributes(this.model);
+                model.mergeAttributes(this.model);
                 assert (template != null);
                 return template + " :: " + fragment;
             }

@@ -12,11 +12,14 @@ import java.io.IOException;
 import java.util.Arrays;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -33,7 +36,15 @@ public final class MainViewTests extends BaseViewTestCase {
         @Controller
         static class MockAjaxController {
 
+            @Autowired private BaseViewTestCase.Config.MockController baseController;
+
             @Nullable private String word = null;
+
+            @GetMapping(MainController.URL_WORD_LIST)
+            @NonNull public String getWordList(@NonNull Model model) {
+                model.addAttribute(MainController.MODEL_ATTR_WORDS, word);
+                return baseController.fragment(FRAG_WORD_LIST, model);
+            }
 
             @PostMapping(MainController.URL_ADD_WORD)
             public void setWord(@NonNull @PathVariable(MainController.URL_PARAM_WORD) String word) {
@@ -54,16 +65,6 @@ public final class MainViewTests extends BaseViewTestCase {
     public void wordListIsPopulatedCorrectly() throws Exception {
         final String[] words = {"alpha", "bravo"};
         assertWordsInWordList(getPageFor(words), words);
-    }
-
-    private void assertWordsInWordList(HtmlPage page, String... expectedWords) {
-        assertWordsInWordList(getWordListOnPage(page), expectedWords);
-    }
-
-    private void assertWordsInWordList(HtmlElement wordList, String... expectedWords) {
-        for (String word : expectedWords) {
-            assertThat(wordList, HtmlMatchers.containsText(word));
-        }
     }
 
     @Test
@@ -88,6 +89,24 @@ public final class MainViewTests extends BaseViewTestCase {
     @Test
     public void addedWordIsUrlEncoded() throws Exception {
         addingWordMakesAjaxCall("%3Fnonsense%3Dtrue", "?nonsense=true");
+    }
+
+    @Test
+    public void addedWordAppearsInWordList() throws Exception {
+        final HtmlPage page = getPageFor("alpha");
+        final String word = "charlie";
+        addWordOnPage(page, word);
+        assertWordsInWordList(page, word);
+    }
+
+    private void assertWordsInWordList(HtmlPage page, String... expectedWords) {
+        assertWordsInWordList(getWordListOnPage(page), expectedWords);
+    }
+
+    private void assertWordsInWordList(HtmlElement wordList, String... expectedWords) {
+        for (String word : expectedWords) {
+            assertThat(wordList, HtmlMatchers.containsText(word));
+        }
     }
 
     @SuppressWarnings("SameParameterValue")

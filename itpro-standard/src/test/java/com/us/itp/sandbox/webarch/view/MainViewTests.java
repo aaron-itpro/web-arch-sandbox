@@ -73,14 +73,6 @@ public final class MainViewTests extends BaseViewTestCase {
         assertWordListsMatchOn(getPageFor(words), getWordListFragmentFor(words));
     }
 
-    private void assertWordListsMatchOn(HtmlPage page1, HtmlPage page2) {
-        assertEquals(getWordListOnPage(page1).asXml(), getWordListOnPage(page2).asXml());
-    }
-
-    @NonNull private HtmlElement getWordListOnPage(@NonNull final HtmlPage page) {
-        return page.getHtmlElementById(ID_WORD_LIST);
-    }
-
     @Test
     public void addingSimpleWordMakesAjaxCall() throws Exception {
         addingWordMakesAjaxCall("Aardvark");
@@ -89,24 +81,6 @@ public final class MainViewTests extends BaseViewTestCase {
     @Test
     public void addedWordIsUrlEncoded() throws Exception {
         addingWordMakesAjaxCall("%3Fnonsense%3Dtrue", "?nonsense=true");
-    }
-
-    @Test
-    public void addedWordAppearsInWordList() throws Exception {
-        final HtmlPage page = getPageFor("alpha");
-        final String word = "charlie";
-        addWordOnPage(page, word);
-        assertWordsInWordList(page, word);
-    }
-
-    private void assertWordsInWordList(HtmlPage page, String... expectedWords) {
-        assertWordsInWordList(getWordListOnPage(page), expectedWords);
-    }
-
-    private void assertWordsInWordList(HtmlElement wordList, String... expectedWords) {
-        for (String word : expectedWords) {
-            assertThat(wordList, HtmlMatchers.containsText(word));
-        }
     }
 
     @SuppressWarnings("SameParameterValue")
@@ -122,15 +96,12 @@ public final class MainViewTests extends BaseViewTestCase {
         assertEquals(expectedWord, ajax.word);
     }
 
-    private void addWordOnPage(@NonNull final HtmlPage page, @NonNull final String word)
-    throws IOException {
-        final HtmlForm form = page.getFormByName(FORM_ADD_WORD);
-        form.getInputByName(FIELD_WORD).type(word);
-        submitForm(form);
-    }
-
-    @NonNull private void submitForm(@NonNull final HtmlForm form) throws IOException {
-        form.getOneHtmlElementByAttribute("button", "type", "submit").click();
+    @Test
+    public void addedWordAppearsInWordList() throws Exception {
+        final HtmlPage page = getPageFor("alpha");
+        final String word = "charlie";
+        addWordOnPage(page, word);
+        assertWordsInWordList(page, word);
     }
 
     @NonNull private HtmlPage getPageFor(@NonNull final String... words) throws IOException {
@@ -144,6 +115,35 @@ public final class MainViewTests extends BaseViewTestCase {
             MainController.MODEL_ATTR_WORDS,
             Arrays.asList(words)
         );
+    }
+
+    @NonNull private HtmlElement getWordListOnPage(@NonNull final HtmlPage page) {
+        return page.getHtmlElementById(ID_WORD_LIST);
+    }
+
+    private void assertWordsInWordList(HtmlPage page, String... expectedWords) {
+        assertWordsInWordList(getWordListOnPage(page), expectedWords);
+    }
+
+    private void assertWordsInWordList(HtmlElement wordList, String... expectedWords) {
+        for (String word : expectedWords) {
+            assertThat(wordList, HtmlMatchers.containsText(word));
+        }
+    }
+
+    private void assertWordListsMatchOn(HtmlPage page1, HtmlPage page2) {
+        assertEquals(getWordListOnPage(page1).asXml(), getWordListOnPage(page2).asXml());
+    }
+
+    private void addWordOnPage(@NonNull final HtmlPage page, @NonNull final String word)
+    throws IOException {
+        final HtmlForm form = page.getFormByName(FORM_ADD_WORD);
+        form.getInputByName(FIELD_WORD).type(word);
+        submitForm(form);
+    }
+
+    @NonNull private void submitForm(@NonNull final HtmlForm form) throws IOException {
+        form.getOneHtmlElementByAttribute("button", "type", "submit").click();
     }
 
     private static final String ID_WORD_LIST = "word-list";

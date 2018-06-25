@@ -2,6 +2,7 @@ package com.us.itp.sandbox.webarch.view;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import com.gargoylesoftware.htmlunit.html.HtmlElement;
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
@@ -102,6 +103,13 @@ public final class MainViewTests extends BaseViewTestCase {
         final String word = "charlie";
         addWordOnPage(page, word);
         assertWordsInWordList(page, word);
+    }
+
+    @Test
+    public void addingWordDoesNotNestWordList() throws Exception {
+        final HtmlPage page = getPageFor("alpha");
+        addWordOnPage(page, "bravo");
+        assertTrue(page.getByXPath("//ul/ul").isEmpty());
     }
 
     @NonNull private HtmlPage getPageFor(@NonNull final String... words) throws IOException {

@@ -14,6 +14,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.MediaType;
 import org.springframework.lang.NonNull;
 import org.springframework.test.context.ContextConfiguration;
@@ -26,13 +27,13 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-@ContextConfiguration(classes = { MainControllerTests.Config.class })
+@ContextConfiguration
 public final class MainControllerTests {
 
     @Configuration
     static class Config {
 
-        @Bean WordService wordService() {
+        @Primary @Bean WordService wordService() {
             return new WordServiceImpl("Alpha", "Bravo");
         }
 

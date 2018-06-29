@@ -84,7 +84,10 @@ public final class MainViewTests extends BaseViewTestCase {
 
     @Test
     public void addedWordIsUrlEncoded() throws Exception {
-        addingWordMakesAjaxCall("%3Fnonsense%3Dtrue", "?nonsense=true");
+        addingWordMakesAjaxCall(
+            "%3Fnonsense%3Dtrue%20and%2For%20false",
+            "?nonsense=true and/or false"
+        );
     }
 
     @SuppressWarnings("SameParameterValue")

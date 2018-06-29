@@ -81,7 +81,15 @@ public final class MainControllerTests {
 
     @Test
     public void wordsAreAddedToService() throws Exception {
-        final String word = "Foo";
+        assertAddingWordSucceeds("Foo");
+    }
+
+    @Test
+    public void canAddWordWithSlash() throws Exception {
+        assertAddingWordSucceeds("and/or");
+    }
+
+    private void assertAddingWordSucceeds(@NonNull final String word) throws Exception {
         assertRestCallSucceeds(postWord(word));
         assertThat(service.listAllWords(), hasItem(word));
     }

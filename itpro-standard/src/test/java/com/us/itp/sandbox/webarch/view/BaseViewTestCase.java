@@ -69,7 +69,7 @@ abstract class BaseViewTestCase {
 
             @GetMapping("/fragment/{fragment}")
             @NonNull public String fragment(
-                @PathVariable("fragment") final String fragment,
+                @NonNull @PathVariable("fragment") final String fragment,
                 @NonNull final Model model
             ) {
                 model.mergeAttributes(this.model);

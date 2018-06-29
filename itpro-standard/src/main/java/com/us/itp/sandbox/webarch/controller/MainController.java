@@ -14,7 +14,7 @@ public final class MainController {
 
     @NonNull private final WordService wordService;
 
-    public MainController(@NonNull WordService wordService) {
+    public MainController(@NonNull final WordService wordService) {
         this.wordService = wordService;
     }
 
@@ -34,7 +34,7 @@ public final class MainController {
     }
 
     @PostMapping(URL_ADD_WORD)
-    public void addWord(@NonNull @PathVariable(URL_PARAM_WORD) String word) {
+    public void addWord(@NonNull @PathVariable(URL_PARAM_WORD) final String word) {
         wordService.addWord(word);
     }
 

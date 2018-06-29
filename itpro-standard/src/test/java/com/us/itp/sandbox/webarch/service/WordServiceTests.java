@@ -22,11 +22,11 @@ public final class WordServiceTests {
         wordListIsInitializedFromConstructor("Alpha", "Bravo");
     }
 
-    private void wordListIsInitializedFromConstructor(String... words) {
+    private void wordListIsInitializedFromConstructor(@NonNull final String... words) {
         wordListIsInitializedFromConstructor(Arrays.asList(words));
     }
 
-    private void wordListIsInitializedFromConstructor(List<String> words) {
+    private void wordListIsInitializedFromConstructor(@NonNull final List<String> words) {
         final WordService service = new WordServiceImpl(words);
         assertThat(service.listAllWords(), is(words));
     }

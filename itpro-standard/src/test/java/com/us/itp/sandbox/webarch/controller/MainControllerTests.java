@@ -54,7 +54,7 @@ public final class MainControllerTests {
         assertPageLoads(MainController.URL_WORD_LIST);
     }
 
-    private void assertPageLoads(String url) throws Exception {
+    private void assertPageLoads(@NonNull final String url) throws Exception {
         mvc.perform(requestPage(url)).andExpect(status().isOk());
     }
 
@@ -64,7 +64,7 @@ public final class MainControllerTests {
         wordListIsFromService(MainController.URL_WORD_LIST);
     }
 
-    private void wordListIsFromService(String url) throws Exception {
+    private void wordListIsFromService(@NonNull final String url) throws Exception {
         mvc.perform(requestPage(url)).andExpect(wordListMatchesService());
     }
 
@@ -72,7 +72,7 @@ public final class MainControllerTests {
         return model().attribute(MainController.MODEL_ATTR_WORDS, service.listAllWords());
     }
 
-    private RequestBuilder requestPage(String url) {
+    private RequestBuilder requestPage(@NonNull final String url) {
         return MockMvcRequestBuilders.get(url).accept(MediaType.TEXT_HTML);
     }
 

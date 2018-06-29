@@ -14,11 +14,11 @@ public final class WordServiceImpl implements WordService {
         this(Collections.emptyList());
     }
 
-    public WordServiceImpl(@NonNull String... words) {
+    public WordServiceImpl(@NonNull final String... words) {
         this(Arrays.asList(words));
     }
 
-    public WordServiceImpl(@NonNull List<String> words) {
+    public WordServiceImpl(@NonNull final List<String> words) {
         this.words.addAll(words);
     }
 
@@ -29,7 +29,7 @@ public final class WordServiceImpl implements WordService {
         return Collections.unmodifiableList(words);
     }
 
-    @Override public void addWord(@NonNull String word) {
+    @Override public void addWord(@NonNull final String word) {
         words.add(word);
     }
 }

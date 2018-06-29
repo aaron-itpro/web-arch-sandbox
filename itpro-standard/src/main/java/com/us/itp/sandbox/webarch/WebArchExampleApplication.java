@@ -7,7 +7,7 @@ import org.springframework.lang.NonNull;
 @SpringBootApplication
 public class WebArchExampleApplication {
 
-    public static void main(@NonNull String[] args) {
+    public static void main(@NonNull final String[] args) {
         SpringApplication.run(WebArchExampleApplication.class, args);
     }
 }

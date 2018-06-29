@@ -54,7 +54,7 @@ public final class MainViewTests extends BaseViewTestCase {
         }
     }
 
-    private Config.MockAjaxController ajax;
+    @NonNull private Config.MockAjaxController ajax;
 
     @Before @Override
     public void setUp() {
@@ -116,8 +116,9 @@ public final class MainViewTests extends BaseViewTestCase {
         return getPageFor(MainController.MODEL_ATTR_WORDS, Arrays.asList(words));
     }
 
-    @NonNull private HtmlPage getWordListFragmentFor(@NonNull final String... words)
-    throws IOException {
+    @NonNull private HtmlPage getWordListFragmentFor(
+        @NonNull final String... words
+    ) throws IOException {
         return getFragmentFor(
             FRAG_WORD_LIST,
             MainController.MODEL_ATTR_WORDS,
@@ -129,22 +130,33 @@ public final class MainViewTests extends BaseViewTestCase {
         return page.getHtmlElementById(ID_WORD_LIST);
     }
 
-    private void assertWordsInWordList(HtmlPage page, String... expectedWords) {
+    private void assertWordsInWordList(
+        @NonNull final HtmlPage page,
+        @NonNull final String... expectedWords
+    ) {
         assertWordsInWordList(getWordListOnPage(page), expectedWords);
     }
 
-    private void assertWordsInWordList(HtmlElement wordList, String... expectedWords) {
+    private void assertWordsInWordList(
+        @NonNull final HtmlElement wordList,
+        @NonNull final String... expectedWords
+    ) {
         for (String word : expectedWords) {
             assertThat(wordList, HtmlMatchers.containsText(word));
         }
     }
 
-    private void assertWordListsMatchOn(HtmlPage page1, HtmlPage page2) {
+    private void assertWordListsMatchOn(
+        @NonNull final HtmlPage page1,
+        @NonNull final HtmlPage page2
+    ) {
         assertEquals(getWordListOnPage(page1).asXml(), getWordListOnPage(page2).asXml());
     }
 
-    private void addWordOnPage(@NonNull final HtmlPage page, @NonNull final String word)
-    throws IOException {
+    private void addWordOnPage(
+        @NonNull final HtmlPage page,
+        @NonNull final String word
+    ) throws IOException {
         final HtmlForm form = page.getFormByName(FORM_ADD_WORD);
         form.getInputByName(FIELD_WORD).type(word);
         submitForm(form);

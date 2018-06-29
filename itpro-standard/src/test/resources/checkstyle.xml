@@ -281,9 +281,7 @@
             <property name="allowThrowsTagsForSubclasses" value="true"/>
         </module>
 
-        <module name="SingleLineJavadoc">
-            <property name="ignoreInlineTags" value="false"/>
-        </module>
+        <module name="SingleLineJavadoc"/>
     </module>
 
     <module name="SuppressionFilter">

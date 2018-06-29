@@ -1,7 +1,10 @@
 package com.us.itp.sandbox.webarch.controller;
 
+import static com.us.itp.sandbox.webarch.util.MockMvcResultMatchers.modelAndView;
 import static org.hamcrest.core.IsCollectionContaining.hasItem;
 import static org.junit.Assert.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -22,7 +25,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.ResultMatcher;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -74,14 +76,24 @@ public final class MainControllerTests {
     }
 
     private RequestBuilder requestPage(@NonNull final String url) {
-        return MockMvcRequestBuilders.get(url).accept(MediaType.TEXT_HTML);
+        return get(url).accept(MediaType.TEXT_HTML);
     }
 
     @Test
     public void wordsAreAddedToService() throws Exception {
         final String word = "Foo";
-        mvc.perform(MockMvcRequestBuilders.post(MainController.URL_ADD_WORD, word))
-            .andExpect(status().isOk());
+        assertRestCallSucceeds(postWord(word));
         assertThat(service.listAllWords(), hasItem(word));
+    }
+
+    private void assertRestCallSucceeds(@NonNull final RequestBuilder call) throws Exception {
+        mvc.perform(call)
+            .andExpect(status().isOk())
+            .andExpect(modelAndView().isNull());
+    }
+
+    @SuppressWarnings("SameParameterValue")
+    private RequestBuilder postWord(@NonNull final String word) {
+        return post(MainController.URL_ADD_WORD, word);
     }
 }

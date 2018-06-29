@@ -15,6 +15,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
@@ -23,6 +24,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ContextConfiguration
 public final class MainViewTests extends BaseViewTestCase {
@@ -48,6 +50,7 @@ public final class MainViewTests extends BaseViewTestCase {
             }
 
             @PostMapping(MainController.URL_ADD_WORD)
+            @ResponseStatus(HttpStatus.OK)
             public void setWord(@NonNull @PathVariable(MainController.URL_PARAM_WORD) String word) {
                 this.word = word;
             }

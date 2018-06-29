@@ -10,8 +10,9 @@ import org.springframework.lang.NonNull;
 /** Hamcrest matchers for matching against HTML content. */
 public final class HtmlMatchers {
 
-    // Static utility class; do not instantiate.
-    private HtmlMatchers() {}
+    private HtmlMatchers() {
+        StaticUtil.preventInstantiation(this);
+    }
 
     @NonNull public static Matcher<HtmlElement> containsText(@NonNull final String text) {
         return new TypeSafeMatcher<HtmlElement>() {

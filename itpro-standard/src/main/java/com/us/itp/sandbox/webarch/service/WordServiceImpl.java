@@ -10,6 +10,9 @@ import org.springframework.stereotype.Service;
 @Service
 public final class WordServiceImpl implements WordService {
 
+    // In a real web app, this would be a data repository bean.
+    @NonNull private final List<String> words = new ArrayList<>();
+
     public WordServiceImpl() {
         this(Collections.emptyList());
     }
@@ -21,9 +24,6 @@ public final class WordServiceImpl implements WordService {
     public WordServiceImpl(@NonNull final List<String> words) {
         this.words.addAll(words);
     }
-
-    // In a real web app, this would be a data repository bean.
-    @NonNull private final List<String> words = new ArrayList<>();
 
     @NonNull @Override public List<String> listAllWords() {
         return Collections.unmodifiableList(words);

@@ -24,10 +24,14 @@
 <script>
     $("form").on("submit", function(event) {
         var word = $(this).find("input[name='word']").val();
-        $.post("word/" + encodeURIComponent(word));
+        $.post("word/" + encodeWord(word));
         $("#word-list").load("/word li");
         event.preventDefault();
     });
+
+    function encodeWord(word) {
+        return encodeURIComponent(encodeURIComponent(word).replace(/\./g, "%2E"));
+    }
 </script>
 
 </body>

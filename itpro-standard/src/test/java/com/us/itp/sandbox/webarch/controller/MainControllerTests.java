@@ -1,6 +1,7 @@
 package com.us.itp.sandbox.webarch.controller;
 
 import static com.us.itp.sandbox.webarch.util.MockMvcResultMatchers.modelAndView;
+import static com.us.itp.sandbox.webarch.util.UrlUtil.encodeUrl;
 import static org.hamcrest.core.IsCollectionContaining.hasItem;
 import static org.junit.Assert.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -89,6 +90,16 @@ public final class MainControllerTests {
         assertAddingWordSucceeds("and/or");
     }
 
+    @Test
+    public void canAddDoublePeriod() throws Exception {
+        assertAddingWordSucceeds("..");
+    }
+
+    @Test
+    public void canAddEscapedPeriod() throws Exception {
+        assertAddingWordSucceeds("%2E%252E");
+    }
+
     private void assertAddingWordSucceeds(@NonNull final String word) throws Exception {
         assertRestCallSucceeds(postWord(word));
         assertThat(service.listAllWords(), hasItem(word));
@@ -102,6 +113,11 @@ public final class MainControllerTests {
 
     @SuppressWarnings("SameParameterValue")
     private RequestBuilder postWord(@NonNull final String word) {
-        return post(MainController.URL_ADD_WORD, word);
+        // Spring auto-encodes the URL once, so we don't need to double encode
+        return post(MainController.URL_ADD_WORD, encodeWord(word));
+    }
+
+    private String encodeWord(@NonNull final String word) {
+        return encodeUrl(word).replace(".", "%2E");
     }
 }

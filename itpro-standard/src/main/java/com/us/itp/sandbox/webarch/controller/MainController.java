@@ -1,7 +1,7 @@
 package com.us.itp.sandbox.webarch.controller;
 
 import static com.us.itp.sandbox.webarch.util.StringUtil.dropPrefix;
-import static com.us.itp.sandbox.webarch.util.UrlUtil.decodeUrl;
+import static com.us.itp.sandbox.webarch.util.UrlUtil.doubleDecodeUrl;
 
 import com.us.itp.sandbox.webarch.service.WordService;
 import java.util.List;
@@ -38,6 +38,16 @@ public final class MainController {
         return "main :: wordList";
     }
 
+    /**
+     * Adds a word to the word list.
+     *
+     * <p>The word may include any character (including spaces; the name "word" is a misnomer), but
+     * periods (which do not normally need to be URL encoded) should be encoded, and the entire
+     * string should be URL-encoded <i>twice</i>.  This is necessary to support words that might
+     * contain either the ".." sequence (which Spring defends against, even after being encoded
+     * once), while also supporting words containing (prior to any escaping) the period escape
+     * sequence "%2E".
+     */
     @PostMapping(URL_ADD_WORD_BASE + "**")
     @ResponseStatus(HttpStatus.OK)
     public void addWord(@NonNull final HttpServletRequest request) {
@@ -49,7 +59,7 @@ public final class MainController {
     }
 
     @NonNull private String extractWordFrom(@NonNull final String url) {
-        return decodeUrl(dropPrefix(URL_ADD_WORD_BASE, url));
+        return doubleDecodeUrl(dropPrefix(URL_ADD_WORD_BASE, url));
     }
 
     public static final String MODEL_ATTR_WORDS = "words";

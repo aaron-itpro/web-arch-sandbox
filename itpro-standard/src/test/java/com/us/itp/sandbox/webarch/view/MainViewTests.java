@@ -54,6 +54,10 @@ public final class MainViewTests extends BaseViewTestCase {
             public void setWord(@NonNull @PathVariable(MainController.URL_PARAM_WORD) String word) {
                 this.word = word;
             }
+
+            void resetWord() {
+                this.word = null;
+            }
         }
     }
 
@@ -63,6 +67,7 @@ public final class MainViewTests extends BaseViewTestCase {
     public void setUp() {
         super.setUp();
         ajax = context.getBean(Config.MockAjaxController.class);
+        ajax.resetWord();
     }
 
     @Test
@@ -83,11 +88,16 @@ public final class MainViewTests extends BaseViewTestCase {
     }
 
     @Test
-    public void addedWordIsUrlEncoded() throws Exception {
+    public void addedWordIsDoubleUrlEncoded() throws Exception {
         addingWordMakesAjaxCall(
-            "%3Fnonsense%3Dtrue%20and%2For%20false",
+            "%253Fnonsense%253Dtrue%2520and%252For%2520false",
             "?nonsense=true and/or false"
         );
+    }
+
+    @Test
+    public void doubleDotsResolveCorrectly() throws Exception {
+        addingWordMakesAjaxCall("%252E%252E", "..");
     }
 
     @SuppressWarnings("SameParameterValue")

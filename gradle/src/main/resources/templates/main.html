@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Web Architecture Example (ITProFound Standard)</title>
+</head>
+<body>
+
+<h1>Web Architecture Example (Gradle)</h1>
+<form name="add-word">
+    <div>
+        <span>Add a word:</span>
+        <input type="text" title="Word to add" name="word">
+        <button type="submit">Add</button>
+    </div>
+</form>
+<h3>Current Words:</h3>
+<ul id="word-list" th:fragment="wordList">
+    <li th:each="word : ${words}" th:text="${word}"></li>
+</ul>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script>
+    $("form").on("submit", function(event) {
+        var word = $(this).find("input[name='word']").val();
+        $.post("word/" + encodeWord(word));
+        $("#word-list").load("/word li");
+        event.preventDefault();
+    });
+
+    function encodeWord(word) {
+        return encodeURIComponent(encodeURIComponent(word).replace(/\./g, "%2E"));
+    }
+</script>
+
+</body>
+</html>

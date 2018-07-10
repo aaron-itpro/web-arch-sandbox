@@ -2,6 +2,7 @@ import java.net.URI
 
 plugins {
     java
+    checkstyle
     id("org.springframework.boot") version "2.0.3.RELEASE"
     id("io.spring.dependency-management") version "1.0.5.RELEASE"
     id("io.franzbecker.gradle-lombok") version "1.14"
@@ -13,6 +14,11 @@ version = "1.0-SNAPSHOT"
 
 configure<JavaPluginConvention> {
     sourceCompatibility = JavaVersion.VERSION_1_8
+}
+
+checkstyle {
+    toolVersion = "8.10.1"
+    configDir = file("src/test/resources")
 }
 
 repositories {

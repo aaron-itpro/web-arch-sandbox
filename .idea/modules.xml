@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/.gradle.iml" filepath="$PROJECT_DIR$/.idea/modules/.gradle.iml" />
       <module fileurl="file://$PROJECT_DIR$/WebArchSandbox.iml" filepath="$PROJECT_DIR$/WebArchSandbox.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/com.us.itp.sandbox.webarch.gradle.iml" filepath="$PROJECT_DIR$/.idea/modules/com.us.itp.sandbox.webarch.gradle.iml" />
       <module fileurl="file://$PROJECT_DIR$/itpro-standard/itpro-standard.iml" filepath="$PROJECT_DIR$/itpro-standard/itpro-standard.iml" />
     </modules>
   </component>
